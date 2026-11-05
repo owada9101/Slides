@@ -303,6 +303,10 @@ P(c_{\mathrm{next}}=j\mid f(h'),v)
 <p>横軸は学習に使った環境step、縦軸は成功率</p>
 <p>→ 32次元の潜在表現では、履歴の情報がどのように整理されているのか？</p>
 </section>
+<section class="slide level2 owada" id="検証履歴長の影響">
+<h2>検証：履歴長の影響</h2>
+<p>色は入力履歴長、形は場面を示す。同じ場面で、長さの違う点がどう配置されるかを見る</p>
+</section>
 <section class="slide level2 owada" id="検証履歴のどの違いを残すか">
 <h2>検証：履歴のどの違いを残すか</h2>
 <p>同じ現在観測を持つ履歴について、過去の情報だけを変え、潜在表現の変化を調べる</p>
@@ -328,11 +332,159 @@ P(c_{\mathrm{next}}=j\mid f(h'),v)
 </tbody>
 </table>
 <p><br/> 単に履歴を似た表現にするだけでなく、必要な違いを保った集約になっているかを確認する</p>
+<p><br/> 学習済みEncoderを固定し、現在観測・位置・向き・経過時間を揃えた履歴を入力</p>
 </section>
 <section class="slide level2 owada" id="検証結果">
 <h2>検証結果</h2>
 <p>32次元では、手掛かりを変えた差が大きく、履歴長の変更による差が小さかった</p>
 <div class="image-row" style="--image-count: 1"><div class="image-item"><img data-src="assets/images/spectra_and_information_directions.png" width="850"/></div></div>
+</section>
+<section class="slide level2 owada" id="情報を判断に使えているか">
+<h2>情報を判断に使えているか</h2>
+<p>潜在表現を固定し、正しい行動を読む新しい分類器と、学習済みの方策を比較する</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>収益予測モデル</th>
+<th style="text-align: right;">学習済み方策の精度</th>
+<th style="text-align: right;">新分類器：16例</th>
+<th style="text-align: right;">新分類器：2,000例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>幅128</td>
+<td style="text-align: right;">52.55%</td>
+<td style="text-align: right;">53.30%</td>
+<td style="text-align: right;">98.57%</td>
+</tr>
+<tr class="even">
+<td>幅32</td>
+<td style="text-align: right;">96.25%</td>
+<td style="text-align: right;">96.35%</td>
+<td style="text-align: right;">99.47%</td>
+</tr>
+</tbody>
+</table>
+<p><br/> 幅128にも判断に必要な情報はあるが、学習済み方策では十分に使えていなかった</p>
+<p>→ 情報の保持に加え、判断に使いやすい表現と読み出し方が重要</p>
+</section>
+<section class="slide level2 owada" id="次元を減らすだけでよいか">
+<h2>次元を減らすだけでよいか</h2>
+<p>内部は幅128のまま、出力する潜在だけを32次元にしたモデルも学習した</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Transformer内部の幅</th>
+<th style="text-align: right;">潜在次元</th>
+<th style="text-align: right;">最終成功率</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>128</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">57.60%</td>
+</tr>
+<tr class="even">
+<td>128</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">66.56%</td>
+</tr>
+<tr class="odd">
+<td>32</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">100.00%</td>
+</tr>
+</tbody>
+</table>
+<p><br/> 出力の次元だけを減らしても、内部から幅32で学んだ結果は再現しなかった</p>
+<p>→ 次元数に加え、何を残す表現を学び、どう判断に使うかを考える</p>
+</section>
+<section class="slide level2 owada" id="共通する履歴をクラスタにまとめる">
+<h2>共通する履歴をクラスタにまとめる</h2>
+<p>潜在表現にk-meansを適用し、履歴長が違う同じ状況と、判断が変わる手掛かりの違いを整理できるか調べる</p>
+<div class="image-row" style="--image-count: 1"><div class="image-item"><img data-src="assets/images/cluster_tradeoff_branch.png"/></div></div>
+<p>幅32 E3では、長さ違いの93.8%が同じ群に入った一方、必要な手掛かり差を別群にできた割合は71.4%だった</p>
+<p>→ 共通性は捉えられるが、必要な違いも同じ群に混ざる場合がある</p>
+</section>
+<section class="slide level2 owada" id="クラスタだけで何を共有できるか">
+<h2>クラスタだけで何を共有できるか</h2>
+<p>同じ群の平均と、個別に近い4履歴を使い、判断や記憶を読み出す</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>読み出す情報</th>
+<th style="text-align: right;">群の平均</th>
+<th style="text-align: right;">近い4履歴</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>正解方向の精度</td>
+<td style="text-align: right;">81.0%</td>
+<td style="text-align: right;">83.2%</td>
+</tr>
+<tr class="even">
+<td>手掛かり種類の精度</td>
+<td style="text-align: right;">50.1%</td>
+<td style="text-align: right;">82.5%</td>
+</tr>
+</tbody>
+</table>
+<p><br/> 群で概略の判断を共有できても、手掛かりなどの細かな違いは群だけでは表しきれない</p>
+<p>→ 共通判断に加えて、個別の履歴情報を読める経路も残したい</p>
+</section>
+<section class="slide level2 owada" id="分析判断に使う特徴でまとめる">
+<h2>分析：判断に使う特徴でまとめる</h2>
+<p>元の潜在表現 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> と、方策が読み取った中間特徴 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo form="prefix" stretchy="false">(</mo><mi>z</mi><mo form="postfix" stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">r(z)</annotation></semantics></math> で群を作り、行動確率をどれだけ共有できるか比較する</p>
+<div class="image-row" style="--image-count: 1"><div class="image-item"><img data-src="assets/images/actor_space_readout.png"/></div></div>
+<p>方策の中間特徴でまとめると、現在の行動傾向を共有しやすい条件があった</p>
+<p>→ 共有先を決めるために、方策が使う特徴を利用する</p>
+</section>
+<section class="slide level2 owada" id="提案共通判断と個別判断を併用する">
+<h2>提案：共通判断と個別判断を併用する</h2>
+<p>履歴ごとの通常の判断に、群で共有する判断を加える</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℓ</mi><mo form="prefix" stretchy="false">(</mo><mi>z</mi><mo form="postfix" stretchy="false">)</mo><mo>=</mo><msub><mi>ℓ</mi><mrow><mi mathvariant="normal">l</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">l</mi></mrow></msub><mo form="prefix" stretchy="false">(</mo><mi>z</mi><mo form="postfix" stretchy="false">)</mo><mo>+</mo><mi>κ</mi><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>K</mi></munderover><msub><mi>q</mi><mi>k</mi></msub><mo form="prefix" stretchy="false">(</mo><mi>z</mi><mo form="postfix" stretchy="false">)</mo><msub><mi>b</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">
+\ell(z)=\ell_{\mathrm{local}}(z)+\kappa\sum_{k=1}^{K}q_k(z)b_k
+</annotation></semantics></math></p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ℓ</mi><mrow><mi mathvariant="normal">l</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">l</mi></mrow></msub><mo form="prefix" stretchy="false">(</mo><mi>z</mi><mo form="postfix" stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\ell_{\mathrm{local}}(z)</annotation></semantics></math>：通常の方策が出す、各行動の点数</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mi>k</mi></msub><mo form="prefix" stretchy="false">(</mo><mi>z</mi><mo form="postfix" stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">q_k(z)</annotation></semantics></math>：方策の中間特徴から決める、群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> の所属重み</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>k</mi></msub><annotation encoding="application/x-tex">b_k</annotation></semantics></math>：群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> で共有し、報酬から学習する行動の点数</li>
+</ul>
+<p><br/> 共通する判断を共有しながら、群内の違いは連続した潜在表現と通常の方策で扱う</p>
+</section>
+<section class="slide level2 owada" id="今後の実験">
+<h2>今後の実験</h2>
+<p>幅32・履歴長128を揃え、通常の方策と、群の共有判断を加えた方策を比較する</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%"/>
+<col style="width: 50%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th>確かめたいこと</th>
+<th>評価するもの</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>少ない経験で学べるか</td>
+<td>成功率の学習曲線、安定した成功までのstep</td>
+</tr>
+<tr class="even">
+<td>必要な情報を保てるか</td>
+<td>後の分岐での手掛かりの利用、誤った判断の共有</td>
+</tr>
+<tr class="odd">
+<td>共有構造が役立ったか</td>
+<td>同じ程度の容量の方策や、近い履歴を使う方法との比較</td>
+</tr>
+</tbody>
+</table>
+<p><br/> 最終成功率に加え、必要な環境経験と計算時間を含めて学習効率を確認する</p>
 </section>
 <section class="slide level2 owada" id="スライドタイトル">
 <h2>スライドタイトル</h2>
@@ -346,36 +498,13 @@ P(c_{\mathrm{next}}=j\mid f(h'),v)
 <section class="slide level2 owada" id="スライドタイトル-3">
 <h2>スライドタイトル</h2>
 </section>
-<section class="slide level2 owada" id="スライドタイトル-4">
-<h2>スライドタイトル</h2>
-</section>
-<section class="slide level2 owada" id="スライドタイトル-5">
-<h2>スライドタイトル</h2>
-</section>
-<section class="slide level2 owada" id="スライドタイトル-6">
-<h2>スライドタイトル</h2>
-</section>
-<section class="slide level2 owada" id="スライドタイトル-7">
-<h2>スライドタイトル</h2>
-</section>
-<section class="slide level2 owada" id="スライドタイトル-8">
-<h2>スライドタイトル</h2>
-</section>
-<section class="slide level2 owada" id="スライドタイトル-9">
-<h2>スライドタイトル</h2>
-</section>
-<section class="slide level2 owada" id="スライドタイトル-10">
-<h2>スライドタイトル</h2>
-</section>
 <section class="slide level2 owada" id="まとめ">
 <h2>まとめ</h2>
-<p>この発表で伝えたい結論を書く。</p>
 </section>
 <section class="slide level2 owada" id="参考文献">
 <h2>参考文献</h2>
-<p>[1]</p>
-<p>[2]</p>
-<p>[3]</p>
+<p>[1] Michael L. Littman, Richard S. Sutton, and Satinder Singh. <a href="https://papers.nips.cc/paper_files/paper/2001/file/1e4d36177d71bbb3558e43af9577d70e-Paper.pdf">Predictive Representations of State</a>. Advances in Neural Information Processing Systems 14, NIPS 2001.</p>
+<p>[2] Kevin Esslinger, Robert Platt, and Christopher Amato. <a href="https://arxiv.org/abs/2206.01078">Deep Transformer Q-Networks for Partially Observable Reinforcement Learning</a>. Foundation Models for Decision Making Workshop at NeurIPS, 2022.</p>
 </section></section>
 <section>
 <section class="title-slide slide level1 owada-section center" id="appendix">
@@ -383,9 +512,6 @@ P(c_{\mathrm{next}}=j\mid f(h'),v)
 </section>
 <section class="slide level2 owada" id="モデル詳細">
 <h2>モデル詳細</h2>
-</section>
-<section class="slide level2" id="section">
-<h2></h2>
 </section></section>
 </div>
 <div class="quarto-auto-generated-content" style="display: none;">
