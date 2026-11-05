@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>HTMLスライドの動作例</title><style>:root {color-scheme:light; --ink:#182b3a; --accent:#007d88; --muted:#546572}
+* {box-sizing:border-box} body {margin:0; background:#17232d; color:var(--ink); font-family:'Hiragino Sans','Yu Gothic',sans-serif}
+#stage {position:fixed; width:1280px; height:720px; transform-origin:top left; background:#fcfcf9}
+.slide {position:absolute; inset:0; padding:48px 64px 94px; display:none; overflow:hidden; background:#fcfcf9}
+.slide.active {display:block} h1,h2,h3,p {margin:0} h2 {font-size:38px; line-height:1.35; margin-bottom:28px; border-bottom:3px solid var(--accent); padding-bottom:14px} h1 {font-size:62px} h3 {font-size:28px; margin:22px 0 12px} p,li {font-size:27px; line-height:1.65} p {margin:14px 0} li {margin:12px 0} ul {padding-left:1.2em} strong {color:var(--accent)}
+.slide.cover,.slide.section-slide {padding-top:190px} .cover h2 {border:0; font-size:48px; line-height:1.55} .cover p {color:var(--muted)} .section-slide {background:#e9f2f1} .section-slide h1::before {content:''; display:block; width:70px; height:6px; background:var(--accent); margin-bottom:32px}
+iframe {width:100%; height:350px; border:0; display:block; margin:12px 0; pointer-events:none} .columns {display:flex; gap:48px}.column {flex:1; min-width:0} table {border-collapse:collapse; width:100%; font-size:25px; margin:24px 0} th,td {padding:15px 18px; border-bottom:1px solid #b9c9cd; text-align:left} th {background:#e9f2f1} a {color:inherit} .citation {font-size:.65em; color:var(--muted)}
+.citations {position:absolute; bottom:24px; left:64px; right:90px; font-size:12px; line-height:1.45; color:#53616a; border-top:1px solid #c8d2d4; padding-top:8px}.citations p {font-size:inherit; line-height:inherit; margin:0}.small p,.small {font-size:21px} .page-number {position:absolute; right:30px; bottom:25px; font-size:14px; color:#53616a}
+#toolbar {position:fixed; right:12px; top:12px; display:flex; gap:6px; z-index:5} button {font:inherit; cursor:pointer; border:1px solid #c1cbcf; background:#fff; color:#182b3a; border-radius:6px; padding:10px 14px} button:focus-visible {outline:3px solid #00a2af} #overview {position:fixed; inset:0; z-index:10; overflow:auto; padding:25px; background:#e7ecee} #overview[hidden] {display:none} #overview h2 {font-size:24px; border:0; margin:22px 0 12px} .overview-row {display:flex; gap:12px; overflow-x:auto; padding:6px 2px 14px}.overview-grid {display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}.thumb {text-align:left; min-width:220px; flex:0 0 260px; height:135px; padding:20px; font-size:18px; border-top:5px solid var(--accent)} .thumb span {display:block; font-size:12px; color:#53616a; margin-bottom:10px}.thumb[aria-current=true] {background:#d7eeeb}
+[data-step].pending {visibility:hidden} #help {color:#53616a; font-size:14px} @media(max-width:600px) {#toolbar button {padding:9px 12px} #overview {padding:16px}.overview-grid {grid-template-columns:repeat(4,220px);overflow:auto} .thumb{flex-basis:220px}}
+body.export #toolbar {display:none} body.export #stage {left:0!important;top:0!important;transform:none!important}
+
+:root{--ink:#233244;--muted:#667483;--accent:#2167a8;--paper:#ffffff;--header:#164b7b;--rule:#86b1d5}.reveal{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:var(--ink);font-size:29px}.reveal-viewport{background:var(--paper)}.reveal .slides{text-align:left}.reveal h1,.reveal h2,.reveal h3{font-family:inherit;color:var(--ink);font-weight:650;text-transform:none;letter-spacing:0;line-height:1.35}.reveal h2{font-size:1.35em;color:#fff;background:var(--header);border-bottom:2px solid var(--header);padding:7px 20px 8px;margin-bottom:18px}.reveal h3{font-size:1em}.reveal p{line-height:1.65;margin:14px 0}.reveal strong{color:var(--accent)}.reveal a{color:var(--accent)}.reveal .lead{font-size:1.02em;margin:4px 0 10px}.reveal .kicker{font-size:.55em;letter-spacing:.13em;color:var(--accent);margin-bottom:12px}.reveal .cover-title{font-size:1.9em;line-height:1.5;margin-top:56px}.reveal .cover-sub{font-size:.9em;color:var(--muted);margin-top:30px}.reveal .small,.reveal .source{font-size:.55em;color:var(--muted);line-height:1.5}.reveal .source{margin-top:8px}.reveal .static-figure{display:block;width:100%;height:370px;object-fit:contain;margin:8px 0}.animation{height:450px;position:relative}.animation iframe{width:100%;height:100%;border:0;display:block;position:relative;z-index:1;opacity:0}.animation.loaded iframe{opacity:1}.fallback{position:absolute;inset:0;background:var(--paper)}.fallback img{width:100%;height:350px;object-fit:contain;margin:0!important}.fallback p{font-size:16px!important}.loaded .fallback{display:none}.print-scenes{display:none}.animation-cues{position:relative;height:0;font-size:23px;color:var(--accent)}.animation-cues .fragment{position:absolute;inset:0}.reveal .result-slot{height:265px;border:2px dashed #b3bdc5;margin:24px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted)}.reveal .result-slot strong{font-size:1.1em;color:var(--muted)}.reveal .result-slot p{font-size:.62em}.reveal table{font-size:.72em;width:100%;line-height:1.6}.reveal table td,.reveal table th{padding:16px 20px;border-bottom:1px solid #ced5dc}.reveal ul{line-height:1.8}.reveal .slide-number{left:20px;right:auto;bottom:16px;background:none;color:var(--muted);font-size:14px}.reveal .progress{color:var(--accent)}.reveal .notes{display:none}.reveal .slides section{height:100%}.reveal .references{font-size:.7em;line-height:1.65}.reveal .references li{margin-bottom:18px}.print-pdf .animation,.print-pdf .animation-cues{display:none!important}.print-pdf .print-scenes{display:flex!important;gap:10px;height:390px;align-items:center}.print-scenes img{width:32%;max-height:360px;object-fit:contain}.print-scenes figure{width:33%;margin:0}.print-scenes figure img{width:100%}.print-scenes figcaption{font-size:14px}@media print{.animation,.animation-cues{display:none!important}.print-scenes{display:flex!important;gap:10px}.print-scenes figure{width:33%}}
+
+.reveal figure.quarto-float > figcaption{display:none}
+
+.reveal .slide-number{width:auto!important;left:65px!important;right:auto!important;pointer-events:none}
+
+/* The entries below are copies of Quarto/citeproc's bibliography output. */
+.reveal .slide aside.slide-citations {
+  position:absolute;left:0;right:0;bottom:2px;
+  font-size:14px;line-height:1.3;color:var(--muted);
+  border-top:1px solid var(--rule);padding-top:6px;
+}
+.reveal .slide-citations .csl-entry { margin:0 0 4px;display:flex;gap:8px; }
+.reveal .slide-citations .csl-entry:last-child { margin-bottom:0; }
+.reveal .slide-citations .csl-left-margin { flex:0 0 auto; }
+.reveal .slide-citations .csl-right-inline { margin:0;overflow-wrap:anywhere; }
+.reveal #refs { font-size:23px;line-height:1.5; }
+.reveal #refs .csl-entry { margin-bottom:22px; }
+.reveal #refs .csl-right-inline { overflow-wrap:anywhere; }
+
+.reveal figure figcaption{display:none}
+.print-scenes figure:only-child{width:100%}
+.print-scenes figure:only-child img{max-height:390px;width:100%}
+
+.reveal section.cover h2{display:none}
+.print-scenes figure{flex:1;width:0}
+
+/* 用語の小さな注釈（ページ下部） */
+.reveal .footnote-small{position:absolute;left:0;right:0;bottom:12px;font-size:17px;line-height:1.4;color:var(--muted)}
+.reveal .footnote-small p{margin:0}
+.reveal .figure-compact .animation{height:400px}
+.reveal .figure-tall .animation{height:490px}
+
+/* 数式（html-math-method: plain） */
+.reveal .math{font-family:"Times New Roman",Times,serif;font-size:1.08em}
+.reveal .math sub,.reveal .math sup{font-size:.68em}
+
+/* 白地に青の見出し帯と、全ページ共通のフッター罫線。 */
+.reveal .slides section.slide::after{
+  content:"";position:absolute;left:0;right:0;bottom:-4px;
+  border-top:2px solid var(--rule);pointer-events:none;
+}
+.reveal .cover-title{color:var(--header)}
+.reveal .cover .kicker{border-top:6px solid var(--header);padding-top:18px}
+.reveal table th{color:var(--header);background:#edf5fc}
+.reveal .slide-number{color:var(--header)}
+.reveal .slide-number a{color:inherit}
+@media print{
+  .reveal h2,.reveal .cover .kicker,.reveal table th{
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+}
+.print-pdf .reveal .slides section.slide::after{bottom:60px}
+@media print{.reveal .slides section.slide::after{bottom:60px}}
+
+/* 引用フッターがあるページでは、用語の注釈を本文の流れに置いて重なりを避ける。 */
+.reveal .has-citations .footnote-small{position:static;margin-top:10px}
+/* 左に図、右に利点・欠点を置く2段組。 */
+.reveal .method-slide .columns{gap:24px;align-items:flex-start}
+.reveal .method-slide .column p{margin:6px 0 2px}
+.reveal .method-slide .column ul{font-size:.82em;line-height:1.55;margin-top:4px}
+.reveal .method-slide .column li{margin-bottom:6px}
+.reveal .method-slide .animation{height:430px}
+/* 図の下にも本文があり、引用フッターも入るページ。 */
+.reveal .figure-short .animation{height:330px}
+/* 列の多い表。 */
+.reveal .dense-table table{font-size:.6em}
+.reveal .dense-table table td,.reveal .dense-table table th{padding:9px 10px}
+/* 文献一覧は2段で1ページに収める。 */
+.reveal #refs{font-size:18px;line-height:1.45;column-count:2;column-gap:36px}
+.reveal #refs .csl-entry{margin-bottom:14px;break-inside:avoid}
+.reveal .figure-medium .animation{height:360px}
+/* 引用と注釈が下に入る表。 */
+.reveal .compact-table table td,.reveal .compact-table table th{padding:9px 20px}
+
+/* 本文の左右に1文字分の余白を確保し、見出し帯は元の幅を保つ。 */
+.reveal .slides section.slide{
+  --content-inset:29px;
+  box-sizing:border-box;
+  padding-inline:var(--content-inset);
+}
+.reveal .slides section.slide > h2{
+  margin-inline:calc(-1 * var(--content-inset));
+  padding-left:calc(20px + .5em);
+}
+.reveal .slide aside.slide-citations,
+.reveal .slide .footnote-small{
+  left:var(--content-inset);right:var(--content-inset);
+}
+/* 余白追加による本文の折り返し後も、図をフッターより上に収める。 */
+.reveal #future-parallel-lmask .animation{height:420px}
+/* 会議名を含む2行の引用フッターとの間隔を確保する。 */
+.reveal #model-overview .animation{height:430px}
+
+/* 実験結果：左右の曲線と軸ラベルを投影サイズで保つ。 */
+.reveal .result-slide .animation{height:480px}
+.reveal .assignment-slide .animation{height:490px}
+.reveal .assignment-slide > p{font-size:26px;line-height:1.5}
+
+/* 標準のメニューボタンもスライド上には置かない。 */
+.slide-menu-button{display:none!important}
+
+/* メッセージと図内文字を、余白のあるモデル説明ページで大きく表示。 */
+.reveal #am-encoder .animation{height:530px}
+.reveal #am-decoder .animation,
+.reveal #model-encoder-input .animation,
+.reveal #model-encoder-profile .animation{height:510px}
+/* 本文が1行のエンコーダー層のページは、フッター罫線の上まで図を広げる。 */
+.reveal #model-encoder-self .animation,
+.reveal #model-encoder-cross .animation{height:555px}
+
+.reveal #why-parallel .animation{height:400px}
+
+/* Small, non-interactive keyboard reference beside the page-number footer. */
+.reveal .slide-shortcuts{
+  position:absolute;right:24px;bottom:16px;z-index:20;
+  display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px 16px;
+  max-width:calc(100% - 150px);font-size:12px;line-height:1.5;
+  color:var(--muted);pointer-events:none;
+}
+.reveal .slide-shortcuts span{white-space:nowrap}
+.reveal.overview .slide-shortcuts,.print-pdf .slide-shortcuts{display:none}
+@media print{.reveal .slide-shortcuts{display:none}}
+
+/* Esc overview: fill the viewport with selectable thumbnails in reading order. */
+@media screen{
+  .reveal.overview .slides{
+    display:grid!important;
+    grid-template-columns:repeat(var(--overview-columns),minmax(0,1fr));
+    gap:24px;align-content:start;
+    position:absolute;inset:0!important;
+    width:100%!important;height:100%!important;
+    padding:32px;box-sizing:border-box;margin:0!important;
+    transform:none!important;zoom:1!important;
+    overflow:auto!important;scrollbar-gutter:stable;
+  }
+  .reveal.overview .slides section.slide{
+    display:block!important;position:relative!important;
+    top:0!important;left:0!important;margin:0!important;
+    width:var(--overview-width)!important;height:var(--overview-height)!important;
+    min-height:0!important;transform:none!important;
+    zoom:var(--overview-scale);opacity:1!important;visibility:visible!important;
+    background:var(--paper);outline:5px solid #c3cfda;outline-offset:0;
+    cursor:pointer;overflow:hidden;
+  }
+  .reveal.overview .slides section.slide.present,
+  .reveal.overview .slides section.slide:hover{outline-color:var(--accent)}
+  .reveal.overview .slides section.slide *{pointer-events:none!important}
+  .reveal.overview .backgrounds,.reveal.overview .slide-number,
+  .reveal.overview .progress{display:none!important}
+}
+
+/* Integration only: original-slides.css owns the slide's visual design. */
+body{background:#fff} .reveal{font-size:29px;line-height:1.3}
+#stage{background:#fff} #stage .slide{padding:0 29px;overflow:visible;background:#fff}
+#stage h1,#stage h2,#stage h3{margin-top:0} #stage h2{font-size:1.35em;line-height:1.35;margin-top:0}
+#stage p,#stage li{font-size:inherit} #stage li{margin:0} #stage ul,#stage ol{margin:0 0 0 1em;padding:0;line-height:1.8}
+#stage .columns{display:flex;gap:24px} #stage .column{flex:1} #stage .column[style*='60%']{flex:0 0 60%} #stage .column[style*='40%']{flex:0 0 40%}
+#stage iframe{height:95%;max-height:95%;margin:0;border:0;width:95%;max-width:95%}
+#stage .cover{padding-top:0} #stage .cover h2{display:none} #stage .cover-title{font-size:1.9em;line-height:1.5;margin-top:56px}
+#stage .cover-title p{font-size:inherit;line-height:inherit} #stage .section-slide{padding-top:190px} #stage .section-slide h1{font-size:62px} #stage .section-slide h1::before{background:var(--header)}
+#stage .citations{left:29px;right:29px;bottom:2px;font-size:14px;line-height:1.3;color:var(--muted);border-top:1px solid var(--rule);padding-top:6px}
+#stage .citations p{font-size:inherit;line-height:inherit;margin:0 0 4px}
+#stage .citation{font-size:inherit;color:var(--accent)} #stage .page-number{left:0;right:auto;bottom:-18px;color:var(--header);font-size:14px}
+#stage table{font-size:.72em;margin:0;border-collapse:collapse} #stage th,#stage td{padding:16px 20px}
+#stage .small,#stage .small p{font-size:16px;line-height:1.5} #stage .footnote-small{position:absolute;font-size:17px;line-height:1.4;margin-top:10px}
+#stage .footnote-small p{font-size:inherit;line-height:inherit}
+#stage .compact-table table td,#stage .compact-table table th{padding:9px 20px}
+#stage .slide::after{bottom:-4px!important}
+body.export #stage{left:32px!important;top:18px!important;transform:scale(.95)!important}
+#stage .references-slide .csl-entry{display:flex;gap:12px;margin:0 0 25px;font-size:20px;line-height:1.5;overflow-wrap:anywhere}
+#stage .references-slide .csl-left-margin{flex-shrink:0}
+
+#stage .cover p{color:var(--header)}
+
+/* Presentation finish: keep diagrams intact, enrich the surrounding frame. */
+:root{--header:#174b78;--accent:#2167a8;--rule:#c4d8e8}
+#stage .slide{background:#fff}
+#stage h2{background:linear-gradient(105deg,#123c62,#205c8b);border:0;border-left:6px solid #69a9d6;padding-left:calc(14px + .5em);box-shadow:0 3px 10px #163c6214}
+#stage .slide::after{bottom:-4px!important;border-top:1px solid var(--rule)}
+#stage .page-number{left:auto;right:8px;bottom:8px;font-size:14px;line-height:1.2;font-variant-numeric:tabular-nums;letter-spacing:.04em;color:#376184}
+#stage .citations{right:140px;font-size:13px;line-height:1.4;border-top:0;color:#64788a}
+#stage .citations p{margin-bottom:3px}
+#stage .cover{background:radial-gradient(ellipse at 95% 5%,#dbeaf5 0,transparent 52%),linear-gradient(150deg,#fff 35%,#f0f6fb)}
+#stage .cover .cover-title{margin-top:175px;font-size:1.7em;font-weight:650;line-height:1.55;letter-spacing:.015em}
+#stage .cover .cover-title::before{content:'';display:block;width:92px;height:5px;background:#4c91c4;margin-bottom:28px}
+#stage .cover p{color:#174b78}
+#stage .section-slide{background:radial-gradient(ellipse at 100% 0%,#287d91 0,transparent 60%),linear-gradient(125deg,#102d4b,#16476c 65%,#1b637c);padding:205px 65px 0;color:#fff;overflow:hidden}
+#stage .section-slide h1{color:#fff;font-size:58px;position:relative;z-index:1;letter-spacing:.035em;line-height:1.5}
+#stage .section-slide h1::before{width:76px;height:4px;background:#8ddbdc;margin-bottom:32px}
+#stage .section-slide::before{content:'';position:absolute;width:650px;height:650px;right:-220px;bottom:-340px;border:1px solid #ffffff20;border-radius:50%;box-shadow:0 0 0 70px #ffffff05,0 0 0 140px #ffffff04;pointer-events:none}
+#stage .section-slide .page-number{color:#d3e5ef}
+#stage table{border-top:2px solid #4b86b4;border-bottom:1px solid #b8cedf}
+#stage table th{background:#e8f1f8;color:#174b78;font-weight:650}
+#stage table tbody tr:nth-child(even){background:#f7fafd}
+#stage table td{border-bottom:1px solid #dce6ee}
+#stage .references-slide .csl-entry{border-bottom:1px solid #e4edf4;padding-bottom:16px;margin-bottom:18px}
+#toolbar button{background:#fffffff0;border:1px solid #cad9e5;box-shadow:0 2px 10px #14395312;color:#174b78}
+#overview{background:#edf3f8}.thumb{border-top-color:#2167a8;box-shadow:0 3px 12px #174b7810}.thumb[aria-current=true]{background:#dcebf6}
+#stage .footnote-small{bottom:30px}
+/* PDF captures the live final state, rather than the old static fallback. */
+@media print{body.export .animation{display:block!important}body.export .print-scenes{display:none!important}}
+
+/* Highlight existing content without revealing/hiding or moving table cells. */
+.highlight{display:inline-block;padding:2px 9px;border-radius:4px;background:transparent;box-shadow:inset 0 0 0 2px transparent}
+.highlight.animate-highlight{transition:background-color 280ms ease,box-shadow 280ms ease,color 280ms ease}
+.highlight.is-highlighted{background:#fff0b8;color:#754500;box-shadow:inset 0 0 0 2px #e7b54b}
+body.export .highlight{transition:none}
+@media(prefers-reduced-motion:reduce){.highlight.animate-highlight{transition:none}}
+
+/* この発表だけのスタイル */
+</style></head><body><div class="reveal"><main class="slides" id="stage"><section class="slide cover" data-group="" data-section-start="false" id="htmlスライドの動作例"><h2 class="cover">HTMLスライドの動作例</h2>
+<div class="cover-title">
+<p>HTMLスライドの動作例</p>
+</div>
+<p>発表者名・日付</p>
+<span class="page-number">1 / 4</span></section><section class="slide section-slide" data-chapter="01" data-group="背景" data-section-start="true" id="背景"><h1>背景</h1>
+<span class="page-number">2 / 4</span></section><section class="slide" data-group="背景" data-section-start="false" id="文章の下にhtmlを埋め込む"><h2>文章の下にHTMLを埋め込む</h2>
+<p>文章を固定したまま、下の図を右キーで段階的に進められる。</p>
+<div class="animation loaded"><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;style&gt;body{margin:0;font:28px sans-serif;color:#182b3a}main{padding:35px} .item{padding:20px;border-left:5px solid #007d88;margin:12px} [hidden]{display:none}&lt;/style&gt;
+&lt;main&gt;&lt;div class=&quot;item&quot;&gt;入力&lt;/div&gt;&lt;div class=&quot;item&quot; data-show=&quot;1&quot;&gt;処理&lt;/div&gt;&lt;div class=&quot;item&quot; data-show=&quot;2&quot;&gt;結果&lt;/div&gt;&lt;/main&gt;
+&lt;script&gt;/* Each animation implements render(step); the parent owns all navigation. */
+window.registerAnimation = ({steps, render}) =&gt; {
+  if (!Number.isInteger(steps) || steps &lt; 0) throw Error('steps must be a nonnegative integer');
+  window.animation = {steps, step: 0, setStep(n) {
+    this.step = Math.max(0, Math.min(steps, n));
+    render(this.step);
+    document.documentElement.dataset.step = this.step;
+  }};
+  window.animation.setStep(0);
+};
+&lt;/script&gt;&lt;script&gt;
+registerAnimation({steps:2,render(step){document.querySelectorAll('[data-show]').forEach(e=&gt;e.hidden=Number(e.dataset.show)&gt;step);}});
+&lt;/script&gt;&lt;/html&gt;" tabindex="-1" title="入力・処理・結果の段階表示">
+</iframe></div>
+<span class="page-number">3 / 4</span></section><section class="slide" data-group="背景" data-section-start="false" id="まとめ"><h2>まとめ</h2>
+<p>メモ・原稿・アセットを発表ごとにまとめて管理する。</p>
+<span class="page-number">4 / 4</span></section></main></div><nav aria-label="スライド操作" id="toolbar"><button aria-label="スライド一覧" id="menu">☰</button><button aria-label="全画面" id="fullscreen">⛶</button></nav><aside aria-label="スライド一覧" aria-modal="true" hidden="" id="overview" role="dialog"><button id="close">閉じる</button><p id="help">↑↓ ページ · ←→ step · 左右長押しで先頭／最後 · 画面左30%で戻る／それ以外で進む</p></aside><script>(() => {
+const slides=[...document.querySelectorAll('.slide')], stage=document.querySelector('#stage'), overview=document.querySelector('#overview');
+let index=0, step=0, held=null, timer=null, long=false, lastInput=-Infinity;
+const frames=s=>[...s.querySelectorAll('iframe')];
+function maxStep(){return Math.max(0,...frames(slides[index]).map(f=>f.contentWindow.animation?.steps||0),...[...slides[index].querySelectorAll('[data-step],[data-highlight-step]')].map(e=>Number(e.dataset.step||e.dataset.highlightStep)));}
+function paint(animate=false){slides.forEach((s,i)=>{s.classList.toggle('active',i===index);s.setAttribute('aria-hidden',String(i!==index));frames(s).forEach(f=>f.contentWindow.animation?.setVisible?.(i===index));}); frames(slides[index]).forEach(f=>f.contentWindow.animation?.setStep(step,animate));slides[index].querySelectorAll('[data-step]').forEach(e=>e.classList.toggle('pending',Number(e.dataset.step)>step)); slides[index].querySelectorAll('[data-highlight-step]').forEach(e=>{e.classList.toggle('animate-highlight',animate);e.classList.toggle('is-highlighted',Number(e.dataset.highlightStep)<=step);}); history.replaceState(null,'',`#${index+1}/${step}`);}
+function go(i,n=0,animate=false){index=Math.max(0,Math.min(slides.length-1,i));step=Math.max(0,Math.min(maxStep(),n));paint(animate);}
+function move(dir){const now=performance.now(),animate=now-lastInput>300;lastInput=now;if(dir>0){step<maxStep()?go(index,step+1,animate):go(index+1);}else{step>0?go(index,step-1,animate):(index>0&&go(index-1,Infinity));}}
+function jump(dir){go(index,dir>0?Infinity:0);}
+function resize(){let scale=Math.min(innerWidth/1280,innerHeight/720)*.95;stage.style.transform=`scale(${scale})`;stage.style.left=`${(innerWidth-1280*scale)/2}px`;stage.style.top=`${(innerHeight-720*scale)/2}px`;}
+function close(){overview.hidden=true;document.querySelector('#menu').focus();}
+function menu(){overview.hidden=false;overview.querySelectorAll('.thumb').forEach((b,i)=>b.setAttribute('aria-current',String(i===index)));overview.querySelector('#close').focus();}
+const grouped=slides.some(s=>s.dataset.sectionStart==='true');
+let row;
+slides.forEach((s,i)=>{if(!row||s.dataset.sectionStart==='true'){if(grouped){const h=document.createElement('h2');h.textContent=s.dataset.group||'表紙';overview.append(h);}row=document.createElement('div');row.className=grouped?'overview-row':'overview-grid';overview.append(row);}const b=document.createElement('button');b.className='thumb';const num=document.createElement('span');num.textContent=String(i+1).padStart(2,'0');b.append(num,document.createTextNode(s.querySelector('h1,h2')?.textContent||'Slide'));b.onclick=()=>{go(i);close();};row.append(b);});
+document.querySelector('#menu').onclick=menu;document.querySelector('#close').onclick=close;
+async function fullscreen(){try {if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else document.querySelector('#fullscreen').textContent='全画面非対応';}catch{document.querySelector('#fullscreen').textContent='全画面非対応';}}
+document.querySelector('#fullscreen').onclick=fullscreen;
+function cancel(){clearTimeout(timer);held=null;long=false;}
+addEventListener('keydown',e=>{if(e.target.closest('input,textarea,select'))return;if(!overview.hidden){if(e.key==='Escape')close();if(e.key==='Tab'){const items=[...overview.querySelectorAll('button')];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items.at(-1).focus();}else if(!e.shiftKey&&document.activeElement===items.at(-1)){e.preventDefault();items[0].focus();}}return;}if(e.target.closest('button,a')&&(e.key===' '||e.key==='Enter'))return;
+if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();if(held)return;held=e.key;long=false;timer=setTimeout(()=>{long=true;jump(e.key==='ArrowRight'?1:-1);},450);return;}
+if(e.repeat)return;if(['ArrowDown','ArrowUp',' ','Escape','o','f'].includes(e.key))e.preventDefault();if(e.key==='ArrowDown')go(index+1);if(e.key==='ArrowUp')go(index-1);if(e.key===' ')move(1);if(e.key==='Escape'||e.key==='o')menu();if(e.key==='f')fullscreen();});
+addEventListener('keyup',e=>{if(e.key===held){if(!long)move(e.key==='ArrowRight'?1:-1);cancel();}});addEventListener('blur',cancel);document.addEventListener('visibilitychange',cancel);
+stage.addEventListener('click',e=>{if(e.target.closest('a,button,input')||!overview.hidden)return;const r=stage.getBoundingClientRect();move(e.clientX-r.left<r.width*.3?-1:1);});
+window.deck={go,move,jump,maxStep,get index(){return index},get step(){return step},get count(){return slides.length}};
+addEventListener('resize',resize);resize();
+Promise.all([...document.querySelectorAll('iframe')].map(f=>new Promise(resolve=>{if(f.contentWindow?.animation)resolve();else f.addEventListener('load',resolve,{once:true});}))).then(()=>{const m=location.hash.match(/^#(\d+)(?:\/(\d+))?$/);go(m?Number(m[1])-1:0,m?Number(m[2]||0):0);window.deckReady=true;});
+})();
+</script></body></html>

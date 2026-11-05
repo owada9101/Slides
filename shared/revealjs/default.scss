@@ -1,0 +1,228 @@
+/*-- scss:defaults --*/
+
+/*
+ * template.pdf を基準にした Quarto / reveal.js 用テーマ。
+ *
+ * 使用例
+ *
+ * ## 発表タイトル {.owada-title data-subtitle="発表者名" data-date="2026-09-17"}
+ *
+ * ## 先行研究 {.owada-section}
+ *
+ * ## 本文スライドの見出し {.owada}
+ *
+ * data-subtitle と data-date は省略可能です。
+ */
+
+/*-- scss:rules --*/
+
+:root {
+  /* 使用中のRevealテーマから文字色を受け取る。 */
+  --owada-ink: var(--r-main-color, #1f1f1f);
+  --owada-heading: var(--r-heading-color, var(--owada-ink));
+  --owada-page: var(--r-main-color, #777777);
+  --owada-font: "Yu Gothic", "YuGothic", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  --owada-body-font: "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+
+.reveal {
+  font-family: var(--owada-font);
+  font-size: 32px;
+  color: var(--owada-ink);
+}
+
+.reveal .slides { text-align: left; }
+
+/* 表紙: 中央にタイトル、下に任意の発表者名と日付。 */
+.reveal .slides section.owada-title {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 80px;
+  text-align: center;
+}
+
+.reveal .slides section.owada-title > h2 {
+  order: 0;
+  margin: -44px 0 68px;
+  color: var(--owada-heading);
+  font: 800 58px/1.22 var(--owada-font);
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: none;
+}
+
+.reveal .slides section.owada-title::before,
+.reveal .slides section.owada-title::after {
+  display: block;
+  color: var(--owada-heading);
+  font-family: var(--owada-font);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.reveal .slides section.owada-title::before {
+  order: 1;
+  content: attr(data-subtitle);
+  min-height: 1.3em;
+  font-size: 32px;
+}
+
+.reveal .slides section.owada-title::after {
+  order: 2;
+  content: attr(data-date);
+  min-height: 1.3em;
+  margin-top: 12px;
+  font-size: 28px;
+}
+
+/* 区切り: 「背景」「先行研究」「本題」などを左寄せで大きく置く。 */
+.reveal .slides section.owada-section {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex !important;
+  align-items: center;
+  padding: 0 84px;
+}
+
+.reveal .slides section.owada-section > h2 {
+  margin: 0;
+  color: var(--owada-heading);
+  font: 800 72px/1.15 var(--owada-font);
+  text-align: left;
+  text-transform: none;
+}
+
+/* 本文: 左上に太字の見出し、本文はその下から始める。 */
+.reveal .slides section.owada {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  /* 本文全体を右へ16px移動し、本文幅を維持する。 */
+  padding: 160px 68px 64px 100px;
+  text-align: left;
+}
+
+.reveal .slides section.owada > h2 {
+  position: absolute;
+  top: 40px;
+  left: 84px;
+  margin: 0;
+  color: var(--owada-heading);
+  font: 800 40px/1.15 var(--owada-font);
+  text-align: left;
+  text-transform: none;
+}
+
+.reveal .slides section.owada p,
+.reveal .slides section.owada li {
+  font: 400 32px/1.45 var(--owada-body-font);
+  letter-spacing: 0;
+}
+
+.reveal .slides section.owada p { margin: 0 0 20px; }
+
+.reveal .slides section.owada ul,
+.reveal .slides section.owada ol {
+  margin: 0;
+  padding-left: 1.35em;
+}
+
+.reveal .slides section.owada li { margin: 0 0 12px; }
+.reveal .slides section.owada strong { font-weight: 800; }
+
+/* 必要なページだけ、タイトル右側に小さな参考文献欄を置く。 */
+.reveal .slides section.owada:has(> .title-refs) > h2 {
+  max-width: calc(42% - 108px);
+}
+
+.reveal .slides section.owada > .title-refs {
+  position: absolute;
+  top: 40px;
+  left: 42%;
+  right: 84px;
+  color: #888;
+  text-align: left;
+  font: 400 16px/1.3 var(--owada-body-font);
+  overflow-wrap: anywhere;
+}
+
+.reveal .slides section.owada .title-refs p,
+.reveal .slides section.owada .title-refs li {
+  margin: 0 0 4px;
+  font: inherit;
+  color: inherit;
+}
+
+.reveal .slides section.owada .title-refs > :last-child { margin-bottom: 0; }
+.reveal .slides section.owada .title-refs a { color: inherit; text-decoration: underline; }
+
+.reveal .slides section.owada img,
+.reveal .slides section.owada svg {
+  max-height: none;
+  border: 0;
+  box-shadow: none;
+}
+
+/* 画像のみの連続行は横並びにし、本文の右16px移動を除いてスライド中央へ。 */
+.reveal .slides section.owada > .image-row {
+  --image-gap: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--image-gap);
+  width: 100%;
+  margin: 0 0 20px -16px;
+}
+
+.reveal .image-row > .image-item {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: calc((100% - (var(--image-count) - 1) * var(--image-gap)) / var(--image-count));
+}
+
+.reveal .image-item > img,
+.reveal .image-item > a > img,
+.reveal .image-item > iframe,
+.reveal .image-item > video {
+  display: block;
+  max-width: 100%;
+  margin: 0;
+  object-fit: contain;
+}
+
+.reveal .image-item img,
+.reveal .image-item video { height: auto; }
+.reveal .image-item figure { margin: 0; }
+
+/* 右上のページ番号。 */
+.reveal .slide-number {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  bottom: auto;
+  left: auto;
+  z-index: 31;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--owada-page);
+  font: 400 18px/1 Arial, sans-serif;
+}
+
+.reveal .slides section .fragment { opacity: 1; visibility: inherit; }
+
+/* E キーのPDF出力時も、画面表示と同じ余白を維持する。 */
+html.reveal-print .reveal .slides section.owada {
+  height: 810px !important;
+  min-height: 810px !important;
+  padding: 160px 68px 64px 100px !important;
+}

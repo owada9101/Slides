@@ -1,0 +1,138 @@
+---
+format:
+  revealjs:
+    theme: [default, ../../shared/revealjs/default.scss]
+    width: 1440
+    height: 810
+    margin: 0
+    center: false
+    slide-number: c
+    show-slide-number: all
+    progress: false
+    controls: false
+    transition: none
+    background-transition: none
+    preview-links: auto
+    chalkboard: true
+  pptx:
+    reference-doc: ../../shared/pptx/owada-reference.pptx
+    filters:
+      - ../../shared/pptx/pptx-style.lua
+execute:
+  echo: true
+  warning: false
+---
+
+## 部分観測環境における<br>意思決定のための履歴表現学習 {.owada-title data-subtitle="B4 大和田晃生" data-date="2026-10-21"}
+
+## 前提知識 {.owada-section} 
+
+## 古典的な強化学習 {.owada}
+
+エージェントが環境の状態を見て行動し、その結果として報酬を得る相互作用
+
+この相互作用を繰り返し、状態・行動対の価値を学習して、より高い価値につながる行動を選択する
+
+（エージェントと迷路の環境で行動して次の状態と報酬を受け取り合うブロック図＋Q-tableを作り上げる図）
+
+## 部分観測環境における強化学習 {.owada}
+
+その時の情報だけでは状態が区別できず、適切な価値の判別・意思決定が難しい
+
+（部分観測環境の図で、全体を見れば今の状態がわかるが、観測だけだと違う状態、場所にいても全く同じ状態、場所に見えるので、正しい価値がわからない図）
+
+## 履歴を用いた状態の推測 {.owada}
+
+履歴を参照すれば現在の状態を推測できて意思決定が適切に行える　
+
+（過去の状態s,行動aを集めてできた履歴hを見れば、現在の観測が同じでも状態の判別ができて正しい価値を与えられる図）
+
+
+## 研究の背景・目的 {.owada-section}
+
+## 履歴の扱い方には注意が必要 {.owada}
+
+部分観測環境では履歴が必要だが、そのまま扱うだけでは非常に多い学習量が必要
+
+（不要な違いまで区別すると別の履歴として学習してしまうの図）
+（履歴が長いとどの行動が結果につながったのかを学習するのが難しいの図）
+
+## 履歴を扱いやすくしたい {.owada}
+
+複雑な履歴を意思決定に必要な意味ごとの状態へ整理し、扱いやすく捉え直すことで効率的な学習を可能にしたい
+
+（似たような履歴を同じとして扱うの図）
+（意味ごとの遷移として表現するの図）
+
+* できればどこかでもっと研究の面白さを伝えたい
+
+## 本題 {.owada-section}
+
+## 履歴から状態を表現する {.owada}
+（[1] Littman et al., 2001, NeurIPS,“Predictive Representations of State”）
+（[2] Esslinger et al., 2022, NeurIPS Workshop on Foundation Models for Decision Making, “Deep Transformer Q-Networks for Partially Observable Reinforcement Learning”）
+
+履歴から将来の予測や意思決定に必要な情報を持つ状態表現を学習する
+
+（履歴（観測。行動）→Embeddingm→cocat→Self Attention→潜在表現z→関数g→予測分布、という基本的な流れの図）
+
+## 予備実験　{.owada}
+
+過去に見た手掛かりを保持する記憶課題で、履歴表現の有効性を確認する
+
+（MiniGrid-MemoryS17Random-v0の概図+実験設定詳細）
+
+* ここでTransformer使ったという説明をする
+
+## 実験結果 {.owada}
+
+
+
+
+## 残った課題 {.owada}
+
+予測学習を加えても、行動による将来結果の違いを十分に捉えられなかった
+
+予測対象に加えて、履歴から情報を読み出す方法も見直す
+
+## 予備実験からの仮説 {.owada}
+
+（単純なまとめ方じゃダメ→だから今回のやり方を使って何ができるか理由を言う）
+（説明に、やりたいことと関連してることを含める）
+（ただし、ただ使ったというのではなく、数理的にこれがいいはず、というような説明にする）
+（何枚かに分けても良い）
+
+## 出力クエリによる情報の読み出し {.owada}
+
+意思決定に必要な意味で履歴を整理するために、行動の結果を予測する際の情報の読み出し方を検討する
+
+（エンコーダーの図）
+
+## 出力クエリによる情報の読み出し {.owada}
+
+意思決定に必要な意味で履歴を整理するために、行動の結果を予測する際の情報の読み出し方を検討する
+
+（デコーダーの図）
+
+## 実験設定 {.owada}
+
+（MiniGrid-MemoryS17Random-v0だと過学習を起こしていそうだったので環境を変えたい）
+
+## モデル全体 {.owada}
+
+（今回使用したモデル全体をいう）
+（モデル詳細は未定）
+
+## 実験結果 {.owada}
+
+（色々な結果をスライド分けて貼る）
+
+## まとめと今後の展望　{.owada}
+
+
+
+## 参考文献 {.owada}
+
+
+
+## Appendix　{.owada-section}

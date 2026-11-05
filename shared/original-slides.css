@@ -1,0 +1,151 @@
+:root{--ink:#233244;--muted:#667483;--accent:#2167a8;--paper:#ffffff;--header:#164b7b;--rule:#86b1d5}.reveal{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:var(--ink);font-size:29px}.reveal-viewport{background:var(--paper)}.reveal .slides{text-align:left}.reveal h1,.reveal h2,.reveal h3{font-family:inherit;color:var(--ink);font-weight:650;text-transform:none;letter-spacing:0;line-height:1.35}.reveal h2{font-size:1.35em;color:#fff;background:var(--header);border-bottom:2px solid var(--header);padding:7px 20px 8px;margin-bottom:18px}.reveal h3{font-size:1em}.reveal p{line-height:1.65;margin:14px 0}.reveal strong{color:var(--accent)}.reveal a{color:var(--accent)}.reveal .lead{font-size:1.02em;margin:4px 0 10px}.reveal .kicker{font-size:.55em;letter-spacing:.13em;color:var(--accent);margin-bottom:12px}.reveal .cover-title{font-size:1.9em;line-height:1.5;margin-top:56px}.reveal .cover-sub{font-size:.9em;color:var(--muted);margin-top:30px}.reveal .small,.reveal .source{font-size:.55em;color:var(--muted);line-height:1.5}.reveal .source{margin-top:8px}.reveal .static-figure{display:block;width:100%;height:370px;object-fit:contain;margin:8px 0}.animation{height:450px;position:relative}.animation iframe{width:100%;height:100%;border:0;display:block;position:relative;z-index:1;opacity:0}.animation.loaded iframe{opacity:1}.fallback{position:absolute;inset:0;background:var(--paper)}.fallback img{width:100%;height:350px;object-fit:contain;margin:0!important}.fallback p{font-size:16px!important}.loaded .fallback{display:none}.print-scenes{display:none}.animation-cues{position:relative;height:0;font-size:23px;color:var(--accent)}.animation-cues .fragment{position:absolute;inset:0}.reveal .result-slot{height:265px;border:2px dashed #b3bdc5;margin:24px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted)}.reveal .result-slot strong{font-size:1.1em;color:var(--muted)}.reveal .result-slot p{font-size:.62em}.reveal table{font-size:.72em;width:100%;line-height:1.6}.reveal table td,.reveal table th{padding:16px 20px;border-bottom:1px solid #ced5dc}.reveal ul{line-height:1.8}.reveal .slide-number{left:20px;right:auto;bottom:16px;background:none;color:var(--muted);font-size:14px}.reveal .progress{color:var(--accent)}.reveal .notes{display:none}.reveal .slides section{height:100%}.reveal .references{font-size:.7em;line-height:1.65}.reveal .references li{margin-bottom:18px}.print-pdf .animation,.print-pdf .animation-cues{display:none!important}.print-pdf .print-scenes{display:flex!important;gap:10px;height:390px;align-items:center}.print-scenes img{width:32%;max-height:360px;object-fit:contain}.print-scenes figure{width:33%;margin:0}.print-scenes figure img{width:100%}.print-scenes figcaption{font-size:14px}@media print{.animation,.animation-cues{display:none!important}.print-scenes{display:flex!important;gap:10px}.print-scenes figure{width:33%}}
+
+.reveal figure.quarto-float > figcaption{display:none}
+
+.reveal .slide-number{width:auto!important;left:65px!important;right:auto!important;pointer-events:none}
+
+/* The entries below are copies of Quarto/citeproc's bibliography output. */
+.reveal .slide aside.slide-citations {
+  position:absolute;left:0;right:0;bottom:2px;
+  font-size:14px;line-height:1.3;color:var(--muted);
+  border-top:1px solid var(--rule);padding-top:6px;
+}
+.reveal .slide-citations .csl-entry { margin:0 0 4px;display:flex;gap:8px; }
+.reveal .slide-citations .csl-entry:last-child { margin-bottom:0; }
+.reveal .slide-citations .csl-left-margin { flex:0 0 auto; }
+.reveal .slide-citations .csl-right-inline { margin:0;overflow-wrap:anywhere; }
+.reveal #refs { font-size:23px;line-height:1.5; }
+.reveal #refs .csl-entry { margin-bottom:22px; }
+.reveal #refs .csl-right-inline { overflow-wrap:anywhere; }
+
+.reveal figure figcaption{display:none}
+.print-scenes figure:only-child{width:100%}
+.print-scenes figure:only-child img{max-height:390px;width:100%}
+
+.reveal section.cover h2{display:none}
+.print-scenes figure{flex:1;width:0}
+
+/* 用語の小さな注釈（ページ下部） */
+.reveal .footnote-small{position:absolute;left:0;right:0;bottom:12px;font-size:17px;line-height:1.4;color:var(--muted)}
+.reveal .footnote-small p{margin:0}
+.reveal .figure-compact .animation{height:400px}
+.reveal .figure-tall .animation{height:490px}
+
+/* 数式（html-math-method: plain） */
+.reveal .math{font-family:"Times New Roman",Times,serif;font-size:1.08em}
+.reveal .math sub,.reveal .math sup{font-size:.68em}
+
+/* 白地に青の見出し帯と、全ページ共通のフッター罫線。 */
+.reveal .slides section.slide::after{
+  content:"";position:absolute;left:0;right:0;bottom:-4px;
+  border-top:2px solid var(--rule);pointer-events:none;
+}
+.reveal .cover-title{color:var(--header)}
+.reveal .cover .kicker{border-top:6px solid var(--header);padding-top:18px}
+.reveal table th{color:var(--header);background:#edf5fc}
+.reveal .slide-number{color:var(--header)}
+.reveal .slide-number a{color:inherit}
+@media print{
+  .reveal h2,.reveal .cover .kicker,.reveal table th{
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+}
+.print-pdf .reveal .slides section.slide::after{bottom:60px}
+@media print{.reveal .slides section.slide::after{bottom:60px}}
+
+/* 引用フッターがあるページでは、用語の注釈を本文の流れに置いて重なりを避ける。 */
+.reveal .has-citations .footnote-small{position:static;margin-top:10px}
+/* 左に図、右に利点・欠点を置く2段組。 */
+.reveal .method-slide .columns{gap:24px;align-items:flex-start}
+.reveal .method-slide .column p{margin:6px 0 2px}
+.reveal .method-slide .column ul{font-size:.82em;line-height:1.55;margin-top:4px}
+.reveal .method-slide .column li{margin-bottom:6px}
+.reveal .method-slide .animation{height:430px}
+/* 図の下にも本文があり、引用フッターも入るページ。 */
+.reveal .figure-short .animation{height:330px}
+/* 列の多い表。 */
+.reveal .dense-table table{font-size:.6em}
+.reveal .dense-table table td,.reveal .dense-table table th{padding:9px 10px}
+/* 文献一覧は2段で1ページに収める。 */
+.reveal #refs{font-size:18px;line-height:1.45;column-count:2;column-gap:36px}
+.reveal #refs .csl-entry{margin-bottom:14px;break-inside:avoid}
+.reveal .figure-medium .animation{height:360px}
+/* 引用と注釈が下に入る表。 */
+.reveal .compact-table table td,.reveal .compact-table table th{padding:9px 20px}
+
+/* 本文の左右に1文字分の余白を確保し、見出し帯は元の幅を保つ。 */
+.reveal .slides section.slide{
+  --content-inset:29px;
+  box-sizing:border-box;
+  padding-inline:var(--content-inset);
+}
+.reveal .slides section.slide > h2{
+  margin-inline:calc(-1 * var(--content-inset));
+  padding-left:calc(20px + .5em);
+}
+.reveal .slide aside.slide-citations,
+.reveal .slide .footnote-small{
+  left:var(--content-inset);right:var(--content-inset);
+}
+/* 余白追加による本文の折り返し後も、図をフッターより上に収める。 */
+.reveal #future-parallel-lmask .animation{height:420px}
+/* 会議名を含む2行の引用フッターとの間隔を確保する。 */
+.reveal #model-overview .animation{height:430px}
+
+/* 実験結果：左右の曲線と軸ラベルを投影サイズで保つ。 */
+.reveal .result-slide .animation{height:480px}
+.reveal .assignment-slide .animation{height:490px}
+.reveal .assignment-slide > p{font-size:26px;line-height:1.5}
+
+/* 標準のメニューボタンもスライド上には置かない。 */
+.slide-menu-button{display:none!important}
+
+/* メッセージと図内文字を、余白のあるモデル説明ページで大きく表示。 */
+.reveal #am-encoder .animation{height:530px}
+.reveal #am-decoder .animation,
+.reveal #model-encoder-input .animation,
+.reveal #model-encoder-profile .animation{height:510px}
+/* 本文が1行のエンコーダー層のページは、フッター罫線の上まで図を広げる。 */
+.reveal #model-encoder-self .animation,
+.reveal #model-encoder-cross .animation{height:555px}
+
+.reveal #why-parallel .animation{height:400px}
+
+/* Small, non-interactive keyboard reference beside the page-number footer. */
+.reveal .slide-shortcuts{
+  position:absolute;right:24px;bottom:16px;z-index:20;
+  display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px 16px;
+  max-width:calc(100% - 150px);font-size:12px;line-height:1.5;
+  color:var(--muted);pointer-events:none;
+}
+.reveal .slide-shortcuts span{white-space:nowrap}
+.reveal.overview .slide-shortcuts,.print-pdf .slide-shortcuts{display:none}
+@media print{.reveal .slide-shortcuts{display:none}}
+
+/* Esc overview: fill the viewport with selectable thumbnails in reading order. */
+@media screen{
+  .reveal.overview .slides{
+    display:grid!important;
+    grid-template-columns:repeat(var(--overview-columns),minmax(0,1fr));
+    gap:24px;align-content:start;
+    position:absolute;inset:0!important;
+    width:100%!important;height:100%!important;
+    padding:32px;box-sizing:border-box;margin:0!important;
+    transform:none!important;zoom:1!important;
+    overflow:auto!important;scrollbar-gutter:stable;
+  }
+  .reveal.overview .slides section.slide{
+    display:block!important;position:relative!important;
+    top:0!important;left:0!important;margin:0!important;
+    width:var(--overview-width)!important;height:var(--overview-height)!important;
+    min-height:0!important;transform:none!important;
+    zoom:var(--overview-scale);opacity:1!important;visibility:visible!important;
+    background:var(--paper);outline:5px solid #c3cfda;outline-offset:0;
+    cursor:pointer;overflow:hidden;
+  }
+  .reveal.overview .slides section.slide.present,
+  .reveal.overview .slides section.slide:hover{outline-color:var(--accent)}
+  .reveal.overview .slides section.slide *{pointer-events:none!important}
+  .reveal.overview .backgrounds,.reveal.overview .slide-number,
+  .reveal.overview .progress{display:none!important}
+}

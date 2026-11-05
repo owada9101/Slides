@@ -1,0 +1,41 @@
+---
+format:
+  revealjs:
+    theme: [default, ../../shared/revealjs/default.scss]
+    width: 1440
+    height: 810
+    margin: 0
+    center: false
+    slide-number: c
+    show-slide-number: all
+    progress: false
+    controls: false
+    transition: none
+    background-transition: none
+    preview-links: auto
+    chalkboard: true
+  pptx:
+    reference-doc: ../../shared/pptx/owada-reference.pptx
+    filters:
+      - ../../shared/pptx/pptx-style.lua
+execute:
+  echo: true
+  warning: false
+---
+
+## 発表タイトル {.owada-title data-subtitle="発表者名" data-date="日付"}
+
+## 背景 {.owada-section}
+
+## この発表の問い {.owada}
+
+ここに、このページで伝えたい文章を書く。
+
+<!-- 図は文章の下に挿入する。
+画像: ![図の説明](assets/images/example.png)
+HTML: <iframe src="assets/html/example/index.html" title="図の説明"></iframe>
+-->
+
+## まとめ {.owada}
+
+この発表で伝えたい結論を書く。

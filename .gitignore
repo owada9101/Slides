@@ -1,0 +1,9 @@
+/.quarto/
+/_site/
+
+**/*.quarto_ipynb
+
+.DS_Store
+__pycache__/
+/.venv/
+/.build/
